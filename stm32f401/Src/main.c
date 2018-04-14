@@ -103,6 +103,7 @@ int fgetc(FILE *f)
 int main(void)
 {
 	char t;
+	GPIO_InitTypeDef GPIO_InitStruct;
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -121,8 +122,20 @@ int main(void)
   //MX_SPI1_Init();
   //MX_SPI2_Init();
   MX_TIM2_Init();
-  //MX_TIM3_Init();
+  MX_TIM3_Init();
   MX_USART1_UART_Init();
+	HAL_TIM_Base_Start(&htim2);
+	HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_3); 
+	 /* GPIO_InitStruct.Pin = GPIO_PIN_0;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+			  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_7;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);*/
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -133,7 +146,12 @@ int main(void)
   {
      //scanf("%c",&t);
 		 //printf("%c",t);
-		printf("hello\n");
+		//printf("hello\n");
+		/*HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_1);
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_0);
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_2);
+		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_7);*/
 
   }
   /* USER CODE END 3 */
@@ -253,9 +271,9 @@ static void MX_TIM2_Init(void)
   TIM_OC_InitTypeDef sConfigOC;
 
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 749;
+  htim2.Init.Prescaler = 0;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 0;
+  htim2.Init.Period = 749;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   if (HAL_TIM_OC_Init(&htim2) != HAL_OK)
   {
