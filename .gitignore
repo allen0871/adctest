@@ -1,0 +1,17 @@
+
+stm32f401/MDK-ARM/JLinkLog.txt
+stm32f401/MDK-ARM/JLinkLog.txt
+stm32f401/MDK-ARM/stm32f401.uvguix.allen
+*.d
+stm32f401/MDK-ARM/JLinkLog.txt
+*.o
+*.axf
+*.crf
+*.sct
+*.lnp
+*.htm
+*.dep
+*.hex
+*.iex
+*.map
+stm32f401/MDK-ARM/
