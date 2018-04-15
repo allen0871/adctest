@@ -184,6 +184,70 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 1 */
 }
 
+extern TIM_HandleTypeDef htim2;
+extern volatile char init;
+#define REFCCR TIM2->CCR1
+#define REFNCCR TIM2->CCR2
+volatile char flag = 0;
+volatile unsigned int* ccra;
+volatile unsigned int* ccrb;
+
+void TIM2_IRQHandler(void)
+{
+/*	if(TIM2->CCMR1 != 0x3030)
+	{
+		//ÉèÖÃOCMode´Óforce lowÎªtoggle
+		
+		TIM2->CCMR1 = 0x3030;
+	}*/
+	 if(__HAL_TIM_GET_FLAG(&htim2, TIM_FLAG_CC4) != RESET)
+  {
+				 		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+		//HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+		 if(GPIOA->IDR & GPIO_PIN_3)
+		 {
+			 REFCCR = 740;
+			 REFNCCR = 400+70;
+		 }
+		 else
+		 {
+			 REFCCR = 400+70;
+			 REFNCCR = 700;
+		 }
+		 TIM2->CCMR1 = 0x3030;
+		 	//	HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+		 //(OC_Config->OCMode << 8U);
+     __HAL_TIM_CLEAR_IT(&htim2, TIM_IT_CC4);
+
+  }
+	if(__HAL_TIM_GET_FLAG(&htim2, TIM_FLAG_UPDATE) != RESET)
+  {
+     if(GPIOA->IDR & GPIO_PIN_3)
+		 {
+			 REFCCR = 100;
+			 REFNCCR = 325+70;
+			 //ccra = &(REFCCR);
+			 //ccrb = &(REFNCCR);
+		 }
+		 else
+		 {
+			 REFCCR = 325+70;
+			 REFNCCR = 100;
+			 
+			 //ccrb = &(REFCCR);
+			 //ccra = &(REFNCCR);
+		 }
+		 TIM2->CCMR1 = 0x1010;
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+		 		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+		__HAL_TIM_CLEAR_IT(&htim2, TIM_FLAG_UPDATE);
+  }
+
+}
+
 /******************************************************************************/
 /* STM32F4xx Peripheral Interrupt Handlers                                    */
 /* Add here the Interrupt Handlers for the used peripherals.                  */
